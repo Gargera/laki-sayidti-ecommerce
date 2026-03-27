@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>لكي سيدتي — Products</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] },
+          colors: { brand:{500:'#f97316',600:'#ea580c'} }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family:'DM Sans',sans-serif; }
+    .display { font-family:'Playfair Display',serif; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes slideIn { from{opacity:0;transform:translateX(100%);}to{opacity:1;transform:translateX(0);} }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#f97316; transition:width .25s; }
+    .nav-link:hover::after { width:100%; }
+    .fade-up { animation:fadeUp .5s ease both; }
+    .product-card { transition:transform .25s, box-shadow .25s; }
+    .product-card:hover { transform:translateY(-5px); box-shadow:0 24px 48px rgba(0,0,0,.35); }
+    .product-card:hover .card-overlay { opacity:1; }
+    .card-overlay { opacity:0; transition:opacity .25s; }
+    .add-btn { transition:background .2s, transform .15s; }
+    .add-btn:hover { background:#ea580c; transform:scale(1.03); }
+    .add-btn:active { transform:scale(.97); }
+    .toast { animation:slideIn .35s ease; }
+    .filter-btn.active { background:#3B0764; color:#fff; border-color:#7E22CE; }
+    input[type=range] { accent-color:#f97316; }
+    .star { color:#fbbf24; }
+  </style>
+
+</head>
+
+<body class="bg-purple-600 text-white min-h-screen">
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-purple-950 backdrop-blur-md border-b border-purple-950">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+    
+      <a href="home.html" class="display text-2xl text-white"><pre>لكي <span class="text-purple-700">سيدتي</span></pre></a>
+  
+      <div class="hidden md:flex items-center gap-8">
+        <a href="home.html" class="nav-link text-purple-600 hover:text-white text-sm font-medium transition-colors">Home</a>
+        <a href="products.html" class="nav-link text-purple-200 hover:text-white text-sm font-medium transition-colors">Products</a>
+        <a href="cart.html" class="nav-link text-purple-600 hover:text-white text-sm font-medium transition-colors">Cart</a>
+      </div>
+    
+      <div class="flex items-center gap-4">
+        <a href="cart.html" class="relative">
+          <svg class="w-6 h-6 text-purple-600 hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+        </a>
+        <button id="loginBtn" class="nav-link hidden md:flex text-purple-600 hover:text-white text-sm transition-colors"></button>
+      </div>
+    
+      <button id="mobileIcon" class="md:hidden text-stone-300 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobileMenu" class="md:hidden bg-purple-950 border-t border-stone-800 flex-col px-4 py-4 gap-4">
+    <a href="home.html" class="text-purple-600 hover:text-white text-sm font-medium transition-colors">Home</a>
+    <a href="products.html" class="text-purple-200 hover:text-white text-sm font-medium transition-colors">Products</a>
+    <a href="cart.html" class="text-purple-600 hover:text-white text-sm font-medium transition-colors">Cart</a>
+    <button id="loginMobile" class="text-left text-purple-600 hover:text-white text-sm font-medium transition-colors"></button>
+  </div>
+</nav>
+
+<div id="toast" class="fixed top-20 right-4 z-100 hidden">
+  <div class="toast bg-stone-800 border border-orange-500/40 text-white text-sm px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+    <span class="text-orange-500">✓</span>
+    <span id="toastMsg">Added to cart!</span>
+  </div>
+</div>
+
+<div class="pt-24 pb-8 px-4 border-b border-stone-800">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="display text-4xl text-white mb-1">All Products</h1>
+    <p class="text-stone-400 text-sm"><span id="productCount">0</span> items found</p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-col sm:flex-row gap-4 mb-8">
+    <div class="relative flex-1">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input id="searchInput" type="text" placeholder="Search products…"
+        class="w-full bg-stone-900 border border-purple-700 text-white rounded-xl pl-11 pr-4 py-3 text-sm placeholder-stone-500 focus:outline-none focus:border-purple-950 transition-colors"/>
+    </div>
+
+    <select id="sortSelect" class="bg-stone-900 border border-purple-700 text-stone-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-950 transition-colors cursor-pointer">
+      <option value="default">Sort: Default</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name-asc">Name: A–Z</option>
+      <option value="rating">Top Rated</option>
+    </select>
+  </div>
+
+  <div id="categoryFilters" class="flex flex-wrap gap-2 mb-8">
+    <button class="filter-btn active text-sm px-4 py-1.5 rounded-full border hover:bg-purple-800 transition-all" data-cat="all">All</button>
+  
+  </div>
+
+  <div id="loadingState" class="text-center py-24">
+    <div class="inline-block w-10 h-10 border-4 border-white border-t-purple-950 rounded-full animate-spin mb-4"></div>
+    <p class="text-purple-950 text-sm">Loading amazing products…</p>
+  </div>
+
+  <div id="errorState" class="hidden text-center py-24">
+    <p class="text-5xl mb-4">😞</p>
+    <p class="text-purple-950 text-lg font-medium mb-2">Failed to load products</p>
+    <p class="text-purple-880 text-sm mb-6">Check your connection and try again</p>
+    <button id="retryBtn" class="bg-purple-950 hover:bg-purple-800 text-white px-6 py-2.5 rounded-xl text-sm transition-colors">Try Again</button>
+  </div>
+
+
+  <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+
+  <div id="emptySearch" class="hidden text-center py-24">
+    <p class="text-5xl mb-4">🔍</p>
+    <p class="text-stone-300 text-lg font-medium">No products found</p>
+    <p class="text-stone-500 text-sm">Try a different search or category.</p>
+  </div>
+</div>
+
+<footer class="bg-purple-950 border-t border-stone-950 py-8 px-4 mt-12">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+    <pre class="display text-xl text-white">لكي <span class="text-purple-700">سيدتي</span></pre>
+    <p class="text-stone-500 text-sm">© 2026 لكي سيدتي. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="common.js"></script>
+<script src="products.js"></script>
+
+</body>
+
+</html>

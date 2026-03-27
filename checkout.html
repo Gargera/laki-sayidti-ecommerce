@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>لكي سيدتي — CheckOut</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px);} to { opacity:1; transform:translateY(0);} }
+    .fade-up { animation: fadeUp .6s ease both; }
+    .delay-1 { animation-delay:.1s; }
+    .delay-2 { animation-delay:.2s; }
+    .delay-3 { animation-delay:.3s; }
+  </style>
+
+</head>
+
+<body class="bg-purple-950 min-h-screen flex items-center justify-center relative overflow-scroll">
+
+  <div class="relative z-10 w-full max-w-md">
+    <div class="text-center mb-10 fade-up">
+      <span class="display text-4xl text-white tracking-tight"><pre>لكي <span class="text-purple-500">سيدتي</span></pre></span></span>
+    </div>
+
+    <div class="bg-purple-300 border border-stone-800 rounded-2xl text-center text-purple-950 overflow-visible p-8 shadow-2xl fade-up delay-1">
+        <pre >لا صلي عالنبي كده</pre>
+        <pre> 🏃‍♀️ دي منتجات وهمية مفيش دفع ولا حاجة </pre>
+        <button id="Back" class="bg-purple-700 text-white font-semibold my-5 py-4 px-4 rounded-xl text-base">Back to Home</button>
+    </div>
+
+  </div>
+
+  <script src="checkout.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>لكي سيدتي — Cart</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family:'DM Sans',sans-serif; }
+    .display { font-family:'Playfair Display',serif; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes slideOut { from{opacity:1;transform:translateX(0);}to{opacity:0;transform:translateX(-30px);} }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#f97316; transition:width .25s; }
+    .nav-link:hover::after { width:100%; }
+    .fade-up { animation:fadeUp .4s ease both; }
+    .cart-item { transition:background .2s; }
+    .cart-item:hover { background:rgba(255,255,255,.02); }
+    .qty-btn { transition:background .15s, color .15s; }
+    .qty-btn:hover { background:#f97316; color:#fff; }
+    .remove-btn { transition:color .2s; }
+    .remove-btn:hover { color:#f97316; }
+    .checkout-btn { transition:background .2s, transform .15s, box-shadow .2s; }
+    .checkout-btn:hover { background:#ea580c; transform:translateY(-1px); box-shadow:0 8px 24px rgba(249,115,22,.35); }
+  </style>
+
+</head>
+
+<body class="bg-purple-600 text-white min-h-screen">
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-purple-950 backdrop-blur-md border-b border-purple-950">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+    
+      <a href="home.html" class="display text-2xl text-white"><pre>لكي <span class="text-purple-700">سيدتي</span></pre></a>
+  
+      <div class="hidden md:flex items-center gap-8">
+        <a href="home.html" class="nav-link text-purple-600 hover:text-white text-sm font-medium transition-colors">Home</a>
+        <a href="products.html" class="nav-link text-purple-600 hover:text-white text-sm font-medium transition-colors">Products</a>
+        <a href="cart.html" class="nav-link text-purple-200 hover:text-white text-sm font-medium transition-colors">Cart</a>
+      </div>
+    
+      <div class="flex items-center gap-4">
+        <a href="cart.html" class="relative">
+          <svg class="w-6 h-6 text-purple-600 hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+        </a>
+        <button id="loginBtn" class="nav-link hidden md:flex text-purple-600 hover:text-white text-sm transition-colors"></button>
+      </div>
+    
+      <button id="mobileIcon" class="md:hidden text-stone-300 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobileMenu" class="md:hidden bg-purple-950 border-t border-stone-800 flex-col px-4 py-4 gap-4">
+    <a href="home.html" class="text-purple-600 hover:text-white text-sm font-medium transition-colors">Home</a>
+    <a href="products.html" class="text-purple-600 hover:text-white text-sm font-medium transition-colors">Products</a>
+    <a href="cart.html" class="text-purple-200 hover:text-white text-sm font-medium transition-colors">Cart</a>
+    <button id="loginMobile" class="text-left text-purple-600 hover:text-white text-sm font-medium transition-colors"></button>
+  </div>
+</nav>
+
+
+<div class="pt-24 pb-8 px-4 border-b border-stone-800">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="display text-4xl text-white">Your Cart</h1>
+    <p id="itemCountLabel" class="text-stone-900 text-sm mt-1">0 items</p>
+  </div>
+</div>
+
+
+<div class="max-w-7xl mx-auto px-4 py-10">
+  <div id="emptyCart" class="hidden text-center py-28">
+    <div class="inline-flex items-center justify-center w-24 h-24 bg-purple-950 rounded-full mb-6">
+      <svg class="w-12 h-12 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+    </div>
+    <h2 class="display text-3xl text-white mb-3">Your cart is empty</h2>
+    <p class="text-stone-400 text-sm mb-8">Looks like you haven't added anything yet. Let's fix that!</p>
+    <a href="products.html" class="inline-block bg-purple-950 hover:bg-purple-800 text-white font-semibold px-8 py-3.5 rounded-xl transition-all hover:-translate-y-0.5">
+      Browse Products
+    </a>
+  </div>
+
+
+  <div id="cartContent" class="hidden lg:grid lg:grid-cols-3 gap-10">
+
+    <div id="cartItemsList" class="lg:col-span-2 space-y-4"></div>
+
+    <div id="orderSummary" class="hidden lg:col-span-1">
+      <div class="bg-purple-950 border border-stone-800 rounded-2xl p-6 sticky top-24">
+        <h2 class="text-white font-semibold text-lg mb-6">Order Summary</h2>
+
+        <div class="space-y-3 mb-6">
+          <div class="flex justify-between text-sm">
+            <span class="text-stone-400">Subtotal (<span id="totalItems">0</span> items)</span>
+            <span class="text-white">$<span id="subtotal">0.00</span></span>
+          </div>
+
+          <div class="flex justify-between text-sm">
+            <span class="text-stone-400">Tax (8%)</span>
+            <span class="text-white">$<span id="tax">0.00</span></span>
+          </div>
+        </div>
+
+        <div class="border-t border-stone-700 pt-4 mb-6">
+          <div class="flex justify-between">
+            <span class="text-white font-semibold">Total</span>
+            <span class="text-orange-400 text-xl font-bold">$<span id="total">0.00</span></span>
+          </div>
+        </div>
+       
+        <button id="checkoutBtn" class="checkout-btn w-full bg-purple-700 text-white font-semibold py-4 rounded-xl text-base">
+          Checkout →
+        </button>
+        
+        <button id="clearCartBtn" class="w-full mt-4 border border-stone-700 hover:border-red-500/50 text-stone-400 hover:text-red-400 text-sm py-2.5 rounded-xl transition-colors">
+          Clear Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-purple-950 border-t border-stone-950 py-8 px-4 mt-12">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+    <pre class="display text-xl text-white">لكي <span class="text-purple-700">سيدتي</span></pre>
+    <p class="text-stone-500 text-sm">© 2026 لكي سيدتي. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="common.js"></script>
+<script src="cart.js"></script>
+
+</body>
+
+</html>

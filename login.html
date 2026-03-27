@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>لكي سيدتي — Login</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { display: ['Playfair Display','serif'], body: ['DM Sans','sans-serif'] },
+          colors: { brand: { 50:'#fff7ed', 100:'#ffedd5', 400:'#fb923c', 500:'#f97316', 600:'#ea580c', 900:'#1c0a00' } }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    .display { font-family: 'Playfair Display', serif; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px);} to { opacity:1; transform:translateY(0);} }
+    .fade-up { animation: fadeUp .6s ease both; }
+    .delay-1 { animation-delay:.1s; }
+    .delay-2 { animation-delay:.2s; }
+    .delay-3 { animation-delay:.3s; }
+    .noise::before {
+      content:''; position:fixed; inset:0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:0;
+    }
+    input:focus { outline:none; }
+    .input-field { transition: border-color .2s, box-shadow .2s; }
+    .input-field:focus { border-color:#f97316; box-shadow: 0 0 0 3px rgba(249,115,22,.15); }
+    .btn-primary { transition: background .2s, transform .15s, box-shadow .2s; }
+    .btn-primary:hover { background:#d00cea; transform:translateY(-1px); box-shadow:0 8px 24px rgba(249,115,22,.35); }
+    .btn-primary:active { transform:translateY(0); }
+  </style>
+
+</head>
+
+<body class="noise bg-purple-600 min-h-screen flex items-center justify-center px-4 relative overflow-scroll">
+
+  <div class="relative z-10 w-full max-w-md">
+    <div class="text-center mb-10 fade-up">
+      <span class="display text-4xl text-white tracking-tight"><pre>لكي <span class="text-purple-950">سيدتي</span></pre></span></span>
+      <p class="text-stone-300 text-sm mt-2 font-body">Welcome! Sign in to continue.</p>
+    </div>
+
+    <div class="bg-purple-950 border border-stone-800 rounded-2xl p-8 shadow-2xl fade-up delay-1">
+      <form id="loginForm" novalidate>
+  
+        <div class="mb-5">
+          <label class="block text-stone-300 text-sm font-medium mb-2" for="email">Email address:</label>
+
+          <input id="email" type="email" placeholder="you@example.com"
+            class="input-field w-full bg-stone-800 border border-stone-700 text-white rounded-xl px-4 py-3 text-sm placeholder-stone-500"/>
+          <p id="emailErr" class="text-red-600 text-xs mt-1 hidden"></p>
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-stone-300 text-sm font-medium mb-2" for="password">Password:</label>
+
+          <div class="relative">
+            <input id="password" type="password" placeholder="••••••••"
+              class="input-field w-full bg-stone-800 border border-stone-700 text-white rounded-xl px-4 py-3 text-sm placeholder-stone-500 pr-12"/>
+            <button type="button" id="togglePwd" class="absolute right-4 top-1/2 -translate-y-1/2 text-stone-500 hover:text-orange-400 transition-colors text-xs select-none">Show</button>
+          </div>
+          <p id="pwdErr" class="text-red-600 text-xs mt-1 hidden"></p>
+        </div>
+        
+        <button type="submit" class="btn-primary w-full bg-purple-600 text-white font-semibold rounded-xl py-3 text-sm">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+
+</html>
