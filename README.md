@@ -148,5 +148,5 @@ home.html
 <div align="center">
   <strong>لكي سيدتي</strong> &nbsp;·&nbsp; For You, My Lady
   <br/>
-  <sub>A portfolio project by <a href="https://github.com/your-Gargera">Gargera</a></sub>
+  <sub>project by <a href="https://github.com/your-Gargera">Gargera</a></sub>
 </div>
