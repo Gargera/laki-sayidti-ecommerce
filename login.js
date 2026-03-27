@@ -63,5 +63,5 @@ form.addEventListener('submit', (e) => {
   const password = passwordEl.value;
 
   localStorage.setItem('sw_logged_in', 'true');
-  window.location.href = 'home.html';
+  window.location.href = 'index.html';
 });
