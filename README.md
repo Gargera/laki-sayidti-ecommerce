@@ -82,13 +82,13 @@ Password: any123
 ```
 laki-sayidaty/
 │
-├── home.html          # Landing page — hero section + featured products
+├── index.html         # Landing page — hero section + featured products
 ├── products.html      # Full catalog with search, sort & category filters
 ├── cart.html          # Cart page with quantity controls & order summary
 ├── login.html         # Authentication page with form validation
 ├── checkout.html      # Post-checkout confirmation screen
 │
-├── home.js            # Featured products fetch + product card rendering
+├── index.js           # Featured products fetch + product card rendering
 ├── products.js        # Full catalog logic — filtering, sorting, pagination
 ├── cart.js            # Cart rendering, quantity management, summary calc
 ├── login.js           # Form validation + session management
@@ -107,14 +107,14 @@ laki-sayidaty/
 ## 🗺️ App Flow
 
 ```
-home.html
+index.html
     │
     ├──► products.html  (browse & filter catalog)
     │         │
     │         └──► cart.html  (review cart)
     │                   │
     │                   ├── [logged in]  ──► checkout.html
-    │                   └── [logged out] ──► login.html ──► home.html
+    │                   └── [logged out] ──► login.html ──► index.html
     │
     └──► login.html  (sign in / sign out)
 ```
